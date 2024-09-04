@@ -1,0 +1,19 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "react-list-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/reactList/ReactListWebPart.js",
+          "manifest": "./src/webparts/reactList/ReactListWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ReactListWebPartStrings": "lib/webparts/reactList/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}

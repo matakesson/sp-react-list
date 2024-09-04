@@ -1,0 +1,25 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "whichFolder": "subdir",
+    "solutionName": "sp-react-list",
+    "environment": "spo",
+    "packageManager": "npm",
+    "componentType": "webpart",
+    "template": "react",
+    "componentName": "react-list",
+    "componentDescription": ".",
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "16.20.2",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "version": "1.19.0",
+    "libraryName": "sp-react-list",
+    "libraryId": "deb563f7-2941-4485-aa0a-c60ebc370157",
+    "solutionShortDescription": "sp-react-list description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false
+  }
+}
