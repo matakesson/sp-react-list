@@ -55,7 +55,10 @@ export default class ReactList extends React.Component<
 	}
 
 	private getEvents = async () => {
-		const events: any[] = await this._sp.web.lists.getByTitle("Events").items.expand("Author").select("Title", "Content", "Author/Title")();
+		const events: any[] = await this._sp.web.lists
+			.getById("%7B97e77082-d184-4049-afb2-ec1ca8741349%7D")
+			.items.expand("Author")
+			.select("Title", "Content", "Author/Title")();
         console.log(events);
 		return events;
 	};
