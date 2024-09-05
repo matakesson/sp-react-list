@@ -5,6 +5,7 @@ import type { IReactListProps } from "./IReactListProps";
 import { ThemeProvider } from "@fluentui/react";
 //import Week from "../../test/Week";
 import Event from "../../test/Event";
+import { Web } from "@pnp/sp/webs";
 
 import { spfi, SPFI, SPFx } from "@pnp/sp";
 import "@pnp/sp/lists";
@@ -55,8 +56,15 @@ export default class ReactList extends React.Component<
 	}
 
 	private getEvents = async () => {
-		const events: any[] = await this._sp.web.lists
-			.getById("%7B97e77082-d184-4049-afb2-ec1ca8741349%7D")
+        // const web = Web(
+		// 			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/"
+		// 		);
+        const web = Web([
+						this._sp.web,
+						"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+					]);
+		const events: any[] = await web.lists
+			.getByTitle("Events")
 			.items.expand("Author")
 			.select("Title", "Content", "Author/Title")();
         console.log(events);
