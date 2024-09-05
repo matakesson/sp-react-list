@@ -55,7 +55,8 @@ export default class ReactList extends React.Component<
 	}
 
 	private getEvents = async () => {
-		const events: any[] = await this._sp.web.lists.getByTitle("Events").items();
+		const events: any[] = await this._sp.web.lists.getByTitle("Events").items.expand("Author").select("Title", "Content", "Author/Title")();
+        console.log(events);
 		return events;
 	};
 
@@ -80,11 +81,12 @@ export default class ReactList extends React.Component<
 					<Event
 						content={ev.content}
 						author={ev.author}
-						title={ev.title}
+						title={ev.title} 
 					/>
 				))} */}
 				{events.map((ev) => (
-					<Event title={ev.Title} author={ev.Author} content={ev.Content} />
+                    
+					<Event title={ev.Title} content={ev.Content} author={ev.Author.Title}/>
 				))}
 			</ThemeProvider>
 		);
