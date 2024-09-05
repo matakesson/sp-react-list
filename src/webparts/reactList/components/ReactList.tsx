@@ -6,13 +6,19 @@ import { ThemeProvider } from "@fluentui/react";
 //import Week from "../../test/Week";
 import Event from "../../test/Event";
 
+import { spfi, SPFI, SPFx } from "@pnp/sp";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+// import { getSP } from "../../pnpjsConfig";
+// // import { getSP } from "../../pnpjsConfig";
 
+// const sp = spfi().using(SPFx);
 
 interface IState {
 	author: string;
 	title: string;
 	content: string;
-	
+	events: any[];
 }
 
 export default class ReactList extends React.Component<
@@ -22,18 +28,18 @@ export default class ReactList extends React.Component<
 	/**
 	 *
 	 */
+	public _sp: SPFI;
 	constructor(props: IReactListProps) {
 		super(props);
 
 		this.state = {
-			
 			author: "",
 			title: "",
-			content: ""
+			content: "",
+			events: [],
 		};
+		this._sp = spfi().using(SPFx(this.props.context));
 	}
-
-	
 
 	// private _IncrementWeek = () => {
 	// 	this.setState({
@@ -41,25 +47,45 @@ export default class ReactList extends React.Component<
 	// 	})
 	// }
 
+	public async componentDidMount() {
+		const events = await this.getEvents();
+		this.setState({
+			events,
+		});
+	}
+
+	private getEvents = async () => {
+		const events: any[] = await this._sp.web.lists.getByTitle("Events").items();
+		return events;
+	};
+
 	public render(): React.ReactElement<IReactListProps> {
-		const eventList = [
-			{
-				author: "Kat",
-				title: "Välrdskrig",
-				content: "Det är hemskt"
-			},
-			{
-				author: "Lucy",
-				title: "Välrdskrig",
-				content: "Det är hemskt"
-			},
-		]
+		// const eventList = [
+		// 	{
+		// 		author: "Kat",
+		// 		title: "Välrdskrig",
+		// 		content: "Det är hemskt",
+		// 	},
+		// 	{
+		// 		author: "Lucy",
+		// 		title: "Välrdskrig",
+		// 		content: "Det är hemskt",
+		// 	},
+		// ];
+
+		const { events } = this.state;
 		return (
 			<ThemeProvider theme={this.props.theme}>
-				{
-					eventList.map(ev => <Event content={ev.content} author={ev.author} title={ev.title}></Event>)
-				}
-					
+				{/* {eventList.map((ev) => (
+					<Event
+						content={ev.content}
+						author={ev.author}
+						title={ev.title}
+					/>
+				))} */}
+				{events.map((ev) => (
+					<Event title={ev.Title} author={ev.Author} content={ev.Content} />
+				))}
 			</ThemeProvider>
 		);
 	}
