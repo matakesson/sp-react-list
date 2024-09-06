@@ -71,6 +71,19 @@ export default class ReactList extends React.Component<
 		return events;
 	};
 
+    
+
+//     private _deleteEvent = async( title: string) =>{
+//         const web = Web([
+// 					this._sp.web,
+// 					"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+// 				]);
+// const event = await web.lists.getByTitle("Events").items.filter(`Title eq '${title}'`).top(1);
+
+
+// this.setState({events: this.state.events.filter((ev) => ev.Title !== title)});
+//     }
+
 	public render(): React.ReactElement<IReactListProps> {
 		// const eventList = [
 		// 	{

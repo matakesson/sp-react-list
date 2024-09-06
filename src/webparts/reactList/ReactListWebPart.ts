@@ -53,8 +53,8 @@ export default class ReactListWebPart extends BaseClientSideWebPart<IReactListWe
 				environmentMessage: this._environmentMessage,
 				hasTeamsContext: !!this.context.sdks.microsoftTeams,
 				userDisplayName: this.context.pageContext.user.displayName,
-				theme: this.themeManager.getTheme(),
-				context: this.context, // Pass the theme to the component
+				theme: this.themeManager.getTheme(),// Pass the theme to the component
+				context: this.context, 
 			}
 		);
 
