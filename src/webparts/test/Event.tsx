@@ -1,6 +1,7 @@
 import * as React from "react";
 
 interface IProps {
+    itemId: number;
 	title: string;
     content: string;
     author: string;
@@ -21,6 +22,7 @@ export default class Event extends React.Component<IProps> {
 				<h3>{this.props.title}</h3>
 				<p>{this.props.content}</p>
 				<p>{this.props.author}</p>
+                <p>{this.props.itemId}</p>
 				{/* <button onClick={this.handleClick}>Click me</button> */}
 			</div>
 		);

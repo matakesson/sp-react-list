@@ -19,13 +19,11 @@ interface IState {
 	author: string;
 	title: string;
 	content: string;
+    itemId: number;
 	events: any[];
 }
 
-export default class ReactList extends React.Component<
-	IReactListProps,
-	IState
-> {
+export default class ReactList extends React.Component<IReactListProps, IState> {
 	/**
 	 *
 	 */
@@ -37,7 +35,10 @@ export default class ReactList extends React.Component<
 			author: "",
 			title: "",
 			content: "",
-			events: [],
+            itemId: 0,
+            events: [],
+			// itemId: "",
+			
 		};
 		this._sp = spfi().using(SPFx(this.props.context));
 	}
@@ -56,33 +57,30 @@ export default class ReactList extends React.Component<
 	}
 
 	private getEvents = async () => {
-        // const web = Web(
+		// const web = Web(
 		// 			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/"
 		// 		);
-        const web = Web([
-						this._sp.web,
-						"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
-					]);
+		const web = Web([
+			this._sp.web,
+			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+		]);
 		const events: any[] = await web.lists
 			.getByTitle("Events")
 			.items.expand("Author")
-			.select("Title", "Content", "Author/Title")();
-        console.log(events);
+			.select("Title", "Content", "Author/Title", "ID")();
+		console.log(events);
 		return events;
 	};
 
-    
+	//     private _deleteEvent = async( title: string) =>{
+	//         const web = Web([
+	// 					this._sp.web,
+	// 					"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+	// 				]);
+	// const event = await web.lists.getByTitle("Events").items.filter(`Title eq '${title}'`).top(1);
 
-//     private _deleteEvent = async( title: string) =>{
-//         const web = Web([
-// 					this._sp.web,
-// 					"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
-// 				]);
-// const event = await web.lists.getByTitle("Events").items.filter(`Title eq '${title}'`).top(1);
-
-
-// this.setState({events: this.state.events.filter((ev) => ev.Title !== title)});
-//     }
+	// this.setState({events: this.state.events.filter((ev) => ev.Title !== title)});
+	//     }
 
 	public render(): React.ReactElement<IReactListProps> {
 		// const eventList = [
@@ -109,8 +107,14 @@ export default class ReactList extends React.Component<
 					/>
 				))} */}
 				{events.map((ev) => (
-                    
-					<Event title={ev.Title} content={ev.Content} author={ev.Author.Title}/>
+					<Event
+						key={ev["odata.id]"]}
+						title={ev.Title}
+						content={ev.Content}
+						author={ev.Author.Title}
+                        itemId={ev.ID}
+						// itemId={ev["odata.id"]}
+					/>
 				))}
 			</ThemeProvider>
 		);
