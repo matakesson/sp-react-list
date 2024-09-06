@@ -3,17 +3,13 @@ import * as React from "react";
 import type { IReactListProps } from "./IReactListProps";
 // import { escape } from "@microsoft/sp-lodash-subset";
 import { ThemeProvider } from "@fluentui/react";
-//import Week from "../../test/Week";
 import Event from "../../test/Event";
 import { Web } from "@pnp/sp/webs";
 
 import { spfi, SPFI, SPFx } from "@pnp/sp";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-// import { getSP } from "../../pnpjsConfig";
-// // import { getSP } from "../../pnpjsConfig";
 
-// const sp = spfi().using(SPFx);
 
 interface IState {
 	author: string;
@@ -35,20 +31,12 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 			author: "",
 			title: "",
 			content: "",
-            itemId: 0,
-            events: [],
-			// itemId: "",
-			
+			itemId: 0,
+			events: [],
 		};
 		this._sp = spfi().using(SPFx(this.props.context));
 	}
-
-	// private _IncrementWeek = () => {
-	// 	this.setState({
-	// 		week: this.state.week + 1
-	// 	})
-	// }
-
+	
 	public async componentDidMount() {
 		const events = await this.getEvents();
 		this.setState({
@@ -57,9 +45,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 	}
 
 	private getEvents = async () => {
-		// const web = Web(
-		// 			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/"
-		// 		);
 		const web = Web([
 			this._sp.web,
 			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
@@ -83,29 +68,10 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 	//     }
 
 	public render(): React.ReactElement<IReactListProps> {
-		// const eventList = [
-		// 	{
-		// 		author: "Kat",
-		// 		title: "Välrdskrig",
-		// 		content: "Det är hemskt",
-		// 	},
-		// 	{
-		// 		author: "Lucy",
-		// 		title: "Välrdskrig",
-		// 		content: "Det är hemskt",
-		// 	},
-		// ];
-
+		
 		const { events } = this.state;
 		return (
 			<ThemeProvider theme={this.props.theme}>
-				{/* {eventList.map((ev) => (
-					<Event
-						content={ev.content}
-						author={ev.author}
-						title={ev.title} 
-					/>
-				))} */}
 				{events.map((ev) => (
 					<Event
 						key={ev["odata.id]"]}
@@ -113,7 +79,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 						content={ev.Content}
 						author={ev.Author.Title}
                         itemId={ev.ID}
-						// itemId={ev["odata.id"]}
 					/>
 				))}
 			</ThemeProvider>
