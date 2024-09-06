@@ -57,15 +57,21 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 		return events;
 	};
 
-	//     private _deleteEvent = async( title: string) =>{
-	//         const web = Web([
-	// 					this._sp.web,
-	// 					"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
-	// 				]);
-	// const event = await web.lists.getByTitle("Events").items.filter(`Title eq '${title}'`).top(1);
-
-	// this.setState({events: this.state.events.filter((ev) => ev.Title !== title)});
-	//     }
+	private _deleteEvent = async (itemId: number) => {
+		const web = Web([
+			this._sp.web,
+			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+		]);
+		// const event = await web.lists.getByTitle("Events").items.getById(itemId)();
+		const events = await web.lists.getByTitle("Events");
+		await events.items.getById(itemId).delete();
+		const newList =  this.state.events.filter((ev) => ev.ID != itemId);
+		// web.lists.getByTitle("Events").delete(event);
+		// return events;
+		this.setState({
+			events: newList
+		})
+	}
 
 	public render(): React.ReactElement<IReactListProps> {
 		
@@ -74,11 +80,12 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 			<ThemeProvider theme={this.props.theme}>
 				{events.map((ev) => (
 					<Event
-						key={ev["odata.id]"]}
+						// key={ev["odata.id]"]}
 						title={ev.Title}
 						content={ev.Content}
 						author={ev.Author.Title}
                         itemId={ev.ID}
+						getItemId={this._deleteEvent}
 					/>
 				))}
 			</ThemeProvider>

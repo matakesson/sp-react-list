@@ -5,15 +5,14 @@ interface IProps {
 	title: string;
     content: string;
     author: string;
-    // onClick : (id: string) => void;
+    getItemId(itemId: number): Promise<void>;
 }
 
 export default class Event extends React.Component<IProps> {
 
-//     handleClick = () =>{
-// const eventTitle = this.props.title;
-// // this.props.onClick(eventTitle);
-//     }
+	private _handleClick = () =>  {
+		return this.props.getItemId(this.props.itemId);
+	}
 
 	public render(): React.ReactElement {
         
@@ -23,7 +22,7 @@ export default class Event extends React.Component<IProps> {
 				<p>{this.props.content}</p>
 				<p>{this.props.author}</p>
                 <p>{this.props.itemId}</p>
-				{/* <button onClick={this.handleClick}>Click me</button> */}
+				<button onClick={this._handleClick}>Click me</button> 
 			</div>
 		);
 	}
