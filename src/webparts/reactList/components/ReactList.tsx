@@ -4,6 +4,7 @@ import type { IReactListProps } from "./IReactListProps";
 // import { escape } from "@microsoft/sp-lodash-subset";
 import { ThemeProvider } from "@fluentui/react";
 import Event from "../../test/Event";
+import AddEvent from "../../test/AddEvent";
 import { Web } from "@pnp/sp/webs";
 
 import { spfi, SPFI, SPFx } from "@pnp/sp";
@@ -65,13 +66,35 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 		// const event = await web.lists.getByTitle("Events").items.getById(itemId)();
 		const events = await web.lists.getByTitle("Events");
 		await events.items.getById(itemId).delete();
-		const newList =  this.state.events.filter((ev) => ev.ID != itemId);
+		const newList =  this.state.events.filter((ev) => ev.ID !== itemId);
 		// web.lists.getByTitle("Events").delete(event);
 		// return events;
 		this.setState({
 			events: newList
 		})
 	}
+
+    private _saveEvent = async (title: string, content: string) =>{
+        const web = Web([
+            this._sp.web,
+            "https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+        ]);
+       const newItem = await web.lists.getByTitle("Events").items.add({
+            Title: title,
+            Content: content
+        });
+
+        const completeItem = await web.lists
+					.getByTitle("Events")
+					.items.getById(newItem.ID).expand("Author")
+					.select("Title", "Content", "Author/Title", "ID")();
+
+        const newList = this.state.events.concat(completeItem)
+
+        this.setState({
+        events: newList
+       })
+    }
 
 	public render(): React.ReactElement<IReactListProps> {
 		
@@ -88,7 +111,8 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 						getItemId={this._deleteEvent}
 					/>
 				))}
-			</ThemeProvider>
+                <AddEvent submitForm={this._saveEvent} />
+            </ThemeProvider>
 		);
 	}
 }

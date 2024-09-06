@@ -15,7 +15,6 @@ export default class Event extends React.Component<IProps> {
 	}
 
 	public render(): React.ReactElement {
-        
 		return (
 			<div>
 				<h3>{this.props.title}</h3>
@@ -23,6 +22,7 @@ export default class Event extends React.Component<IProps> {
 				<p>{this.props.author}</p>
                 <p>{this.props.itemId}</p>
 				<button onClick={this._handleClick}>Click me</button> 
+                <p>----------------------------------------------------------</p>
 			</div>
 		);
 	}
