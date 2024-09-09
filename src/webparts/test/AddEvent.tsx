@@ -19,12 +19,20 @@ export default class AddEvent extends React.Component<IAddEventProps> {
         
     }
     
-    private _handleSubmit = (e: React.FormEvent) => {
+    private _handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const title = this._titleInput.current?.value || "";
         const content = this._contentInput.current?.value || "";
         
-        return this.props.submitForm(title, content);
+        await this.props.submitForm(title, content);
+
+		if (this._titleInput.current){
+			this._titleInput.current.value = "";
+		}
+		if (this._contentInput.current){
+			this._contentInput.current.value = "";
+		}
+
     }
 
 	public render(): React.ReactElement {
