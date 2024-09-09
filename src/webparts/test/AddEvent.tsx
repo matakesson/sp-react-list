@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./Events.css";
 
 interface IAddEventProps {
 	submitForm(title: string, content: string): Promise<void>;
@@ -32,7 +33,6 @@ export default class AddEvent extends React.Component<IAddEventProps> {
 		if (this._contentInput.current){
 			this._contentInput.current.value = "";
 		}
-
     }
 
 	public render(): React.ReactElement {
@@ -41,12 +41,25 @@ export default class AddEvent extends React.Component<IAddEventProps> {
 						{
 							<form onSubmit={this._handleSubmit}>
 								<label>Title</label>
-								<input type="text" ref={this._titleInput} />
-
+								<br />
+								<input
+									className="text-field"
+									type="text"
+									ref={this._titleInput}
+								/>
+								<br />
+								<br />
 								<label>Content</label>
-								<textarea ref={this._contentInput} />
-
-								<button type="submit">Save</button>
+								<br />
+								<textarea
+									cols={30}
+                                    rows={3}
+									className="text-field"
+									ref={this._contentInput}
+								/>
+								<br />
+								<br />
+								<button className="save-button" type="submit">Save</button>
 							</form>
 						}
 					</div>

@@ -26,6 +26,9 @@ import {
 } from "@microsoft/sp-property-pane";
 import { getSP } from "../pnpjsConfig";
 
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+initializeIcons();
+
 export interface IReactListWebPartProps {
 	description: string;
 	color: string;
