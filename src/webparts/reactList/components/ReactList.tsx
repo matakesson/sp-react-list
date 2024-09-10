@@ -12,6 +12,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 // import { escape } from "@microsoft/sp-lodash-subset";
 import "../../test/Events.css"
+import { Test } from "./exempel";
 // import { unstable_batchedUpdates } from "react-dom";
 
 interface IState {
@@ -205,7 +206,8 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 						getItemId={this._deleteEvent}
                         getItemToEdit={this._editEvent}
 					>{this._editEvent}</Event>
-				))}
+                    
+				))}<Test/>
 			</ThemeProvider>
 		);
 	}
