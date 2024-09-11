@@ -4,6 +4,7 @@ import * as ReactDom from "react-dom";
 import { Version } from "@microsoft/sp-core-library";
 import {
 	type IPropertyPaneConfiguration,
+	PropertyPaneDropdown,
 	PropertyPaneTextField,
 } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
@@ -41,6 +42,7 @@ export interface IReactListWebPartProps {
 	autoUpdate: boolean;
 	nameProp: string;
 	valueProp: string;
+    viewOption: string;
 }
 
 export default class ReactListWebPart extends BaseClientSideWebPart<IReactListWebPartProps> {
@@ -60,6 +62,7 @@ export default class ReactListWebPart extends BaseClientSideWebPart<IReactListWe
 				userDisplayName: this.context.pageContext.user.displayName,
 				theme: this.themeManager.getTheme(),// Pass the theme to the component
 				context: this.context, 
+                viewOption: this.properties.viewOption 
 			}
 		);
 
@@ -283,6 +286,15 @@ export default class ReactListWebPart extends BaseClientSideWebPart<IReactListWe
 									style: PropertyFieldColorPickerStyle.Inline,
 									iconName: "Color",
 									key: "primaryColorFieldId",
+								}),
+								PropertyPaneDropdown("viewOption", {
+									label: "Change view",
+									options: [
+										{ key: "flow", text: "Flow" },
+										{ key: "grid", text: "Grid" },
+										{ key: "carousel", text: "Carousel" },
+										{ key: "hero", text: "Hero" },
+									],
 								}),
 							],
 						},

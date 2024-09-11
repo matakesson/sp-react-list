@@ -8,4 +8,5 @@ export interface IReactListProps {
 	userDisplayName: string;
 	theme: Theme; // Add this line to include the theme
 	context: any;
+    viewOption: string;
 }
