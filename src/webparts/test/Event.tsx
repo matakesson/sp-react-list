@@ -29,12 +29,15 @@ export default class Event extends React.Component<IProps> {
     
 
     private _chooseView = (viewOption: string) =>{
+
+        
+        const img = "https://unsplash.it/1920/1080?random";
         switch (viewOption){
             case "flow":
             return (
                     <div className="card">
                         <div className="card-event-content">
-                            <img src="https://www.justnameit.se/assets/images/page_background1.jpg" />
+                            <img src={img} />
                             <h3>{this.props.title}</h3>
                             <p>{this.props.content}</p>
                             <p>{this.props.author}</p>
@@ -57,7 +60,7 @@ export default class Event extends React.Component<IProps> {
                             <h3 className="hero-title">{this.props.title}</h3>
                             <img
                                 className="hero-img"
-                                src="https://www.justnameit.se/assets/images/page_background1.jpg"
+                                src={img}
                             />
                             <p className="hero-content">{this.props.content}</p>
                             <p className="hero-author">{this.props.author}</p>
@@ -69,7 +72,7 @@ export default class Event extends React.Component<IProps> {
                         <div className="grid-event-content">
                             <img
                                 className="grid-img"
-                                src="https://www.justnameit.se/assets/images/page_background1.jpg"
+                                src={img}
                             />
                             <h3 className="grid-title">{this.props.title}</h3>
                             <p className="grid-content">{this.props.content}</p>
@@ -78,13 +81,13 @@ export default class Event extends React.Component<IProps> {
                         );
             case "carousel":
                 return (
-									<>
-										<img src="https://www.justnameit.se/assets/images/page_background1.jpg" />
-										<h3 className="">{this.props.title}</h3>
-										<p className="">{this.props.content}</p>
-										<p className="">{this.props.author}</p>
-									</>
-								);
+                        <div>
+                            <img src={img} />
+                            <h3 className="">{this.props.title}</h3>
+                            <p className="">{this.props.content}</p>
+                            <p className="">{this.props.author}</p>
+                        </div>
+                        );
             
             
         }
