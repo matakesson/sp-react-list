@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Version } from "@microsoft/sp-core-library";
@@ -29,7 +28,6 @@ import {
 import { getSP } from "../pnpjsConfig";
 
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
-// import { Test } from "./components/exempel";
 initializeIcons();
 
 export interface IReactListWebPartProps {
@@ -54,15 +52,15 @@ export default class ReactListWebPart extends BaseClientSideWebPart<IReactListWe
 	public render(): void {
 		const element: React.ReactElement<IReactListProps> = React.createElement(
 			ReactList,
-            {
+			{
 				description: this.properties.description,
 				isDarkTheme: this._isDarkTheme,
 				environmentMessage: this._environmentMessage,
 				hasTeamsContext: !!this.context.sdks.microsoftTeams,
 				userDisplayName: this.context.pageContext.user.displayName,
-				theme: this.themeManager.getTheme(),// Pass the theme to the component
-				context: this.context, 
-                viewOption: this.properties.viewOption 
+				theme: this.themeManager.getTheme(),
+				context: this.context,
+				viewOption: this.properties.viewOption || "hero",
 			}
 		);
 
@@ -295,6 +293,7 @@ export default class ReactListWebPart extends BaseClientSideWebPart<IReactListWe
 										{ key: "carousel", text: "Carousel" },
 										{ key: "hero", text: "Hero" },
 									],
+                                    selectedKey: this.properties.viewOption || "hero"
 								}),
 							],
 						},

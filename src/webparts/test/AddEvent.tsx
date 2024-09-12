@@ -6,9 +6,6 @@ interface IAddEventProps {
 }
 
 export default class AddEvent extends React.Component<IAddEventProps> {
-	// private _handleClick = () => {
-	// 	return this.props.getItemId(this.props.itemId);
-	// };
 
     private _titleInput: React.RefObject<HTMLInputElement>
     private _contentInput: React.RefObject<HTMLTextAreaElement>
@@ -53,7 +50,7 @@ export default class AddEvent extends React.Component<IAddEventProps> {
 								<br />
 								<textarea
 									cols={30}
-                                    rows={3}
+                                    rows={5}
 									className="text-field"
 									ref={this._contentInput}
 								/>

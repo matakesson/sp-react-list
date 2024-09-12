@@ -1,8 +1,5 @@
-/* eslint-disable react/jsx-key */
 import * as React from "react";
-// import styles from "./ReactList.module.scss";
 import type { IReactListProps } from "./IReactListProps";
-// import { escape } from "@microsoft/sp-lodash-subset";
 import { ThemeProvider } from "@fluentui/react";
 import Event from "../../test/Event";
 import AddEvent from "../../test/AddEvent";
@@ -11,21 +8,9 @@ import { Web } from "@pnp/sp/webs";
 import { spfi, SPFI, SPFx } from "@pnp/sp";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-// import { escape } from "@microsoft/sp-lodash-subset";
 import "../../test/Events.css"
-import { Test } from "./exempel";
-import {
-	CarouselProvider,
-	Slider,
-	Slide,
-	ButtonBack,
-	ButtonNext,
-} from "pure-react-carousel";
-
-
-
-//import { Carousel } from "react-bootstrap";
-// import { unstable_batchedUpdates } from "react-dom";
+import { Carousel } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface IState {
 	author: string;
@@ -72,6 +57,7 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 			.items.expand("Author")
 			.select("Title", "Content", "Author/Title", "ID")();
 		console.log(events);
+        
 		return events;
 	};
 
@@ -80,12 +66,9 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 			this._sp.web,
 			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
 		]);
-		// const event = await web.lists.getByTitle("Events").items.getById(itemId)();
 		const events = await web.lists.getByTitle("Events");
 		await events.items.getById(itemId).delete();
 		const newList = this.state.events.filter((ev) => ev.ID !== itemId);
-		// web.lists.getByTitle("Events").delete(event);
-		// return events;
 		this.setState({
 			events: newList,
 		});
@@ -153,7 +136,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 				.select("Title", "Content", "Author/Title", "ID")();
 
 			const editForm = document.createElement("form");
-			// editForm.addEventListener("submit", this._saveEditedEvent);
 
 			editForm.innerHTML = `<label>Title</label>
             <br />
@@ -165,11 +147,9 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
             <input id="edit-content" type="text" cols="30" rows="3" className="text-field" value="${eventToEdit.Content}" />
             <br />
             <br />
-            <button className="save-button" type="submit">
+            <button className={save-button" type="submit">
                 Save
             </button>`;
-
-			// editForm.addEventListener("submit", this._saveEditedEvent(itemId, eventToEdit.Title, eventToEdit.Content)});
 
 			editForm.addEventListener("submit", async (e) => {
 							e.preventDefault();
@@ -197,7 +177,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 
 		}
 
-		// itemId = this.state.itemId;
 		console.log(itemId);
 	};
 
@@ -205,7 +184,7 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
         const { events } = this.state;
         switch (this.props.viewOption) {
 					case "grid":
-						return (
+                        return (
 							<div className="grid-container">
 								{events
 									.slice()
@@ -234,7 +213,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 									{events.slice(-1).map((ev, i) => (
 										<Event
 											key={i}
-											// key={ev["odata.id]"]}
 											title={ev.Title}
 											content={ev.Content}
 											author={ev.Author.Title}
@@ -254,7 +232,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 										.map((ev, i) => (
 											<Event
 												key={i}
-												// key={ev["odata.id]"]}
 												title={ev.Title}
 												content={ev.Content}
 												author={ev.Author.Title}
@@ -278,7 +255,6 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 									.map((ev, i) => (
 										<Event
 											key={i}
-											// key={ev["odata.id]"]}
 											title={ev.Title}
 											content={ev.Content}
 											author={ev.Author.Title}
@@ -294,53 +270,30 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 						);
                     case "carousel":
                         return (
-                                    <div>
-                                        <CarouselProvider
-                                            naturalSlideWidth={100}
-                                            naturalSlideHeight={125}
-                                            totalSlides={3}
-                                        >
-                                            <Slider>
-                                                <Slide index={0}>I am the first Slide.</Slide>
-                                                <Slide index={1}>I am the second Slide.</Slide>
-                                                <Slide index={2}>I am the third Slide.</Slide>
-                                            </Slider>
-                                            <ButtonBack>Back</ButtonBack>
-                                            <ButtonNext>Next</ButtonNext>
-                                        </CarouselProvider>
-                                        HEJ
-                                        {/* {events
-                    .slice()
-                    .reverse()
-                    .map((ev, i) => (
-                        <Carousel.Item key={ev.ID}>
-                            <Carousel.Caption>
-                                <div
-                                    style={{
-                                        height: "100vh",
-                                        width: "100 vw",
-                                    }}
-                                >
-                                    hej
-                                </div>
-                            </Carousel.Caption>
-
-                            <Event
-                                key={i}
-                                // key={ev["odata.id]"]}
-                                title={ev.Title}
-                                content={ev.Content}
-                                author={ev.Author.Title}
-                                itemId={ev.ID}
-                                getItemId={this._deleteEvent}
-                                getItemToEdit={this._editEvent}
-                                viewOption={this.props.viewOption}
-                            >
-                                {this._editEvent}
-                            </Event>
-                        </Carousel.Item>
-                    ))} */}
-                                    </div>
+                                <Carousel fade={true} className="carousel-outer-container" interval={null}>
+                                    {events
+                                        .slice()
+                                        .reverse()
+                                        .map((ev, i) => (
+                                            <Carousel.Item key={ev.ID} className="carousel-container">
+                                                <img src="https://unsplash.it/1920/1080?random" className="carousel-img" />
+                                                <Carousel.Caption className="carousel-subcontainer">
+                                                <Event
+                                                    key={i}
+                                                    title={ev.Title}
+                                                    content={ev.Content}
+                                                    author={ev.Author.Title}
+                                                    itemId={ev.ID}
+                                                    getItemId={this._deleteEvent}
+                                                    getItemToEdit={this._editEvent}
+                                                    viewOption={this.props.viewOption}
+                                                >
+                                                    {this._editEvent}
+                                                </Event>
+                                                </Carousel.Caption>                                                
+                                            </Carousel.Item>
+                                        ))}
+                                </Carousel>
                                 );
 				}
     };
@@ -348,33 +301,13 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
   
 
 	public render(): React.ReactElement<IReactListProps> {
-		// const { events } = this.state;
 		return (
 			<ThemeProvider theme={this.props.theme}>
-				<AddEvent submitForm={this._saveEvent} />
+				{this._checkViewOption()}
 				<br />
 				<hr />
 				<br />
-                
-				{this._checkViewOption()}
-                {/* <div className="grid-container">
-                {events.map((ev,i) => (
-					<Event
-                    key={i}
-						// key={ev["odata.id]"]}
-						title={ev.Title}
-						content={ev.Content}
-						author={ev.Author.Title}
-						itemId={ev.ID}
-						getItemId={this._deleteEvent}
-                        getItemToEdit={this._editEvent}
-                        viewOption={this.props.viewOption}
-					>{this._editEvent}
-                    
-                                        </Event>
-                    
-				))}</div> */}
-                <Test/>
+				<AddEvent submitForm={this._saveEvent} />				
 			</ThemeProvider>
 		);
 	}
