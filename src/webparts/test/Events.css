@@ -35,28 +35,20 @@ img{
     background: #ffffff;
     box-shadow: inset 5px 5px 10px #b3b3b3,
         inset -5px -5px 10px #ffffff;
-
-    /* border: var(--border); */
-    /* color: var(--dark-grey); */
     font-family: var(--futura);
-    /* border-radius: var(--round-corners); */
     padding: .5rem;
     width: 19rem;
 }
 
 .hero-text-field{
     border: none;
-        border-radius: 5px;
-        background: #ffffff;
-        box-shadow: inset 5px 5px 10px #b3b3b3,
-            inset -5px -5px 10px #ffffff;
-    
-        /* border: var(--border); */
-        /* color: var(--dark-grey); */
-        font-family: var(--futura);
-        /* border-radius: var(--round-corners); */
-        padding: .5rem;
-        width: 100%;
+    border-radius: 5px;
+    background: #ffffff;
+    box-shadow: inset 5px 5px 10px #b3b3b3,
+        inset -5px -5px 10px #ffffff;
+    font-family: var(--futura);
+    padding: .5rem;
+    width: 100%;
 }
 
 .save-button {
