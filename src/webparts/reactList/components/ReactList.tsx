@@ -16,9 +16,14 @@ interface IState {
 	author: string;
 	title: string;
 	content: string;
-    itemId: number;
+	itemId: number;
 	events: any[];
-    viewOption: string
+	viewOption: string;
+	editingItem: {
+		ID: number;
+		Title: string;
+		Content: string;
+	} | null;
 }
 
 export default class ReactList extends React.Component<IReactListProps, IState> {
@@ -36,6 +41,7 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 			itemId: 0,
             events: [],
             viewOption: "",
+            editingItem: null
 		};
 		this._sp = spfi().using(SPFx(this.props.context));
 	}
@@ -98,14 +104,12 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 	};
 
 
-    private _saveEditedEvent= async ( itemId: number, title: string, content: string) => {
+    private _saveEditedEvent= async ( itemId: number, updatedData: any) => {
 		const web = Web([
 			this._sp.web,
 			"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
 		]);
-        await web.lists.getByTitle("Events").items.getById(itemId).update({
-            Title: title,
-            Content: content,});
+        await web.lists.getByTitle("Events").items.getById(itemId).update(updatedData);
 		
 		const updatedItem = await web.lists
 			.getByTitle("Events")
@@ -118,67 +122,27 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 		}));
 	};
 
-	private _editEvent = async (itemId: number) =>  {
-		const eventId = document.getElementById(`edit-pane${itemId}`);
-        const editPaneEventId = document.getElementById("edit-pane-eventId")
-        
-		if (eventId?.style.display === "none") {
-			eventId?.style.setProperty("display", "block");
+    private _getItemToEdit = async (itemId: number) => {
+        const sp = spfi().using(SPFx(this.props.context));
+        const web = Web([
+            sp.web,
+            "https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
+        ]);
 
-			const web = Web([
-				this._sp.web,
-				"https://justnameitab.sharepoint.com/sites/Demo-Emmanuel/",
-			]);
-			const eventToEdit = await web.lists
-				.getByTitle("Events")
-				.items.getById(itemId)
-				.expand("Author")
-				.select("Title", "Content", "Author/Title", "ID")();
+        const item = await web.lists
+            .getByTitle("Events")
+            .items.getById(itemId)
+            .select("ID", "Title", "Content");
 
-			const editForm = document.createElement("form");
+        const updatedEvents = this.state.events.map(event => 
+      event.ID === itemId ? { ...event, ...item } : event
+    );
+    
+        // Assuming you have a state property to store the item being edited
+        this.setState({events: updatedEvents});
+}
 
-			editForm.innerHTML = `<label>Title</label>
-            <br />
-            <input id="edit-title" className="text-field" type="text" value="${eventToEdit.Title}" />
-            <br />
-            <br />
-            <label>Content</label>
-            <br />
-            <input id="edit-content" type="text" cols="30" rows="3" className="text-field" value="${eventToEdit.Content}" />
-            <br />
-            <br />
-            <button className={save-button" type="submit">
-                Save
-            </button>`;
 
-			editForm.addEventListener("submit", async (e) => {
-							e.preventDefault();
-							const newTitle = (
-								document.getElementById("edit-title") as HTMLInputElement
-							)?.value;
-							const newContent = (
-								document.getElementById("edit-content") as HTMLTextAreaElement
-							)?.value;
-							await this._saveEditedEvent(itemId, newTitle, newContent);
-						});
-                        
-
-			eventId.innerHTML = "";
-			eventId?.appendChild(editForm);
-			if (editPaneEventId) {
-				editPaneEventId.textContent = itemId.toString();
-			}
-		} else {
-			eventId?.style.setProperty("display", "none");			
-           
-            if(editPaneEventId){
-				editPaneEventId.textContent = " ";
-			}
-
-		}
-
-		console.log(itemId);
-	};
 
     private _checkViewOption = () => {
         const { events } = this.state;
@@ -198,10 +162,11 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 											author={ev.Author.Title}
 											itemId={ev.ID}
 											getItemId={this._deleteEvent}
-											getItemToEdit={this._editEvent}
+											getItemToEdit={this._getItemToEdit}
 											viewOption={this.props.viewOption}
+                                            saveItem={this._saveEditedEvent}
 										>
-											{this._editEvent}
+											{/* {this._editEvent} */}
 										</Event>
 									))}
 							</div>
@@ -218,10 +183,11 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 											author={ev.Author.Title}
 											itemId={ev.ID}
 											getItemId={this._deleteEvent}
-											getItemToEdit={this._editEvent}
+											getItemToEdit={this._getItemToEdit}
 											viewOption={this.props.viewOption}
+											saveItem={this._saveEditedEvent}
 										>
-											{this._editEvent}
+											{/* {this._editEvent} */}
 										</Event>
 									))}
 								</div>
@@ -237,10 +203,11 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 												author={ev.Author.Title}
 												itemId={ev.ID}
 												getItemId={this._deleteEvent}
-												getItemToEdit={this._editEvent}
+												getItemToEdit={this._getItemToEdit}
 												viewOption={"grid"}
+												saveItem={this._saveEditedEvent}
 											>
-												{this._editEvent}
+												{/* {this._editEvent} */}
 											</Event>
 										))}
 								</div>
@@ -260,24 +227,35 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 											author={ev.Author.Title}
 											itemId={ev.ID}
 											getItemId={this._deleteEvent}
-											getItemToEdit={this._editEvent}
+											getItemToEdit={this._getItemToEdit}
 											viewOption={this.props.viewOption}
+											saveItem={this._saveEditedEvent}
 										>
-											{this._editEvent}
+											{/* {this._editEvent} */}
 										</Event>
 									))}
 							</div>
 						);
                     case "carousel":
                         return (
-                                <Carousel fade={true} className="carousel-outer-container" interval={null}>
-                                    {events
-                                        .slice()
-                                        .reverse()
-                                        .map((ev, i) => (
-                                            <Carousel.Item key={ev.ID} className="carousel-container">
-                                                <img src="https://unsplash.it/1920/1080?random" className="carousel-img" />
-                                                <Carousel.Caption className="carousel-subcontainer">
+                            <Carousel
+                                fade={true}
+                                className="carousel-outer-container"
+                                interval={null}
+                            >
+                                {events
+                                    .slice()
+                                    .reverse()
+                                    .map((ev, i) => (
+                                        <Carousel.Item
+                                            key={ev.ID}
+                                            className="carousel-container"
+                                        >
+                                            <img
+                                                src={`https://unsplash.it/1920/1080?random=${ev.ID}`}
+                                                className="carousel-img"
+                                            />
+                                            <Carousel.Caption className="carousel-subcontainer">
                                                 <Event
                                                     key={i}
                                                     title={ev.Title}
@@ -285,20 +263,19 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
                                                     author={ev.Author.Title}
                                                     itemId={ev.ID}
                                                     getItemId={this._deleteEvent}
-                                                    getItemToEdit={this._editEvent}
+                                                    getItemToEdit={this._getItemToEdit}
                                                     viewOption={this.props.viewOption}
+                                                    saveItem={this._saveEditedEvent}
                                                 >
-                                                    {this._editEvent}
+                                                    {/* {this._editEvent} */}
                                                 </Event>
-                                                </Carousel.Caption>                                                
-                                            </Carousel.Item>
-                                        ))}
-                                </Carousel>
-                                );
+                                            </Carousel.Caption>
+                                        </Carousel.Item>
+                                    ))}
+                            </Carousel>
+                        );
 				}
     };
-
-  
 
 	public render(): React.ReactElement<IReactListProps> {
 		return (
@@ -307,7 +284,7 @@ export default class ReactList extends React.Component<IReactListProps, IState> 
 				<br />
 				<hr />
 				<br />
-				<AddEvent submitForm={this._saveEvent} />				
+				<AddEvent submitForm={this._saveEvent} />
 			</ThemeProvider>
 		);
 	}
