@@ -40,7 +40,7 @@ export default class AddEvent extends React.Component<IAddEventProps> {
 								<label>Title</label>
 								<br />
 								<input
-									className="text-field"
+									className="text-field add-event-text-field "
 									type="text"
 									ref={this._titleInput}
 								/>
@@ -49,9 +49,9 @@ export default class AddEvent extends React.Component<IAddEventProps> {
 								<label>Content</label>
 								<br />
 								<textarea
-									cols={30}
-                                    rows={5}
-									className="text-field"
+									cols={300}
+                                    rows={8}
+									className="text-field add-event-text-field"
 									ref={this._contentInput}
 								/>
 								<br />
